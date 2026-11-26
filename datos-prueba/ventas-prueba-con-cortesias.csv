@@ -1,0 +1,40 @@
+fecha,codigo_pos,cantidad,tipo,precio_unit_con_igv,detalle
+2026-11-06,P001,6,venta,,
+2026-11-06,P002,8,venta,,
+2026-11-06,P003,3,venta,,
+2026-11-06,P004,8,venta,,
+2026-11-06,P005,2,venta,,
+2026-11-06,P006,5,venta,,
+2026-11-06,P007,5,venta,,
+2026-11-06,P008,4,venta,,
+2026-11-06,P999,2,venta,,
+2026-11-06,P007,4,promo,10,Happy hour Chilcano 2x1
+2026-11-06,P002,1,cortesia,0,Cumpleaños
+2026-11-13,P001,7,venta,,
+2026-11-13,P002,9,venta,,
+2026-11-13,P003,2,venta,,
+2026-11-13,P004,7,venta,,
+2026-11-13,P005,1,venta,,
+2026-11-13,P006,6,venta,,
+2026-11-13,P007,6,venta,,
+2026-11-13,P008,5,venta,,
+2026-11-13,P007,6,promo,10,Happy hour Chilcano 2x1
+2026-11-13,P004,5,promo,8,Balde de cervezas 5x40
+2026-11-13,P008,2,cortesia,0,Cliente frecuente
+2026-11-13,P006,1,cortesia,0,Compensación por demora
+2026-11-20,P001,8,venta,,
+2026-11-20,P002,10,venta,,
+2026-11-20,P003,4,venta,,
+2026-11-20,P004,8,venta,,
+2026-11-20,P005,2,venta,,
+2026-11-20,P006,7,venta,,
+2026-11-20,P007,6,venta,,
+2026-11-20,P008,6,venta,,
+2026-11-20,P999,1,venta,,
+2026-11-20,P002,4,promo,11,Pisco sour 2x1
+2026-11-20,P004,5,promo,8,Balde de cervezas 5x40
+2026-11-20,P007,4,promo,10,Happy hour Chilcano 2x1
+2026-11-20,P001,2,cortesia,0,Cumpleaños
+2026-11-20,P002,1,cortesia,0,Invitación de gerencia
+2026-11-20,P005,1,cortesia,0,Compensación por demora
+2026-11-20,P008,1,cortesia,0,Cliente frecuente

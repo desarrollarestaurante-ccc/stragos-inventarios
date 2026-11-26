@@ -1,0 +1,4 @@
+app.check.js
+__pycache__/
+*.pyc
+~$*.xlsx

@@ -1,0 +1,104 @@
+<!-- ============ ACCESO ============ -->
+<div class="login" id="v-login">
+  <div class="login-photo" id="login-photo" role="img" aria-label="Ron cola servido en la barra de Stragos">
+    <img class="lg" data-img="logo" alt="Stragos karaoke bar">
+    <div>
+      <p class="tag">Karaoke · boxes · San Borja</p>
+      <h1>Control de inventarios para barra, cocina y almacén</h1>
+    </div>
+  </div>
+  <div class="login-side">
+    <form class="login-form" id="lg-form" novalidate autocomplete="off">
+      <p class="eyebrow">Stragos Ucello · Inventarios</p>
+      <h2>Ingresa a tu cuenta</h2>
+
+      <div class="box-err" id="lg-alert" role="alert" hidden></div>
+
+      <div class="field">
+        <label for="lg-user">Usuario</label>
+        <input class="input" id="lg-user" type="text" autocapitalize="none" spellcheck="false" placeholder="Ej.: jdiego" aria-describedby="lg-user-err">
+        <p class="err-msg" id="lg-user-err" hidden></p>
+      </div>
+      <div class="field">
+        <label for="lg-pass">Contraseña</label>
+        <div class="pw">
+          <input class="input" id="lg-pass" type="password" placeholder="Tu contraseña" aria-describedby="lg-pass-err lg-caps">
+          <button type="button" class="reveal" id="lg-reveal" aria-controls="lg-pass" aria-pressed="false">Mostrar</button>
+        </div>
+        <p class="err-msg" id="lg-pass-err" hidden></p>
+        <p class="warn-msg" id="lg-caps" hidden>Bloq Mayús está activado.</p>
+      </div>
+      <div class="row" style="gap:6px 20px">
+        <label class="check"><input type="checkbox" id="lg-remember"> Recordar mi usuario</label>
+        <label class="check"><input type="checkbox" id="lg-guided"> Modo demo guiada</label>
+      </div>
+      <button class="btn block" type="submit" id="lg-submit" style="min-height:50px;font-size:17px">Ingresar</button>
+
+      <details class="demo" id="lg-demo">
+        <summary>Cuentas de demo</summary>
+        <div class="accts" id="lg-accts"></div>
+      </details>
+
+      <details class="demo">
+        <summary>Novedades de la versión 7</summary>
+        <ul class="fine" style="padding-left:18px;margin:8px 0 0;display:flex;flex-direction:column;gap:6px">
+          <li><b>Inventario diario:</b> barra y cocina cuentan su cierre de turno; gerencia lo cruza con el teórico y con el auditor.</li>
+          <li><b>Mermas con flujo completo:</b> aprobar, devolver para corregir o rechazar (sin pérdida o con cargo al responsable).</li>
+          <li><b>Compras con aprobación:</b> almacén solicita, administración aprueba (gerencia si supera S/ 1,000) y almacén recibe.</li>
+          <li><b>Ventas con cortesías y promociones</b>, vista de mermas y cortesías contra objetivo y food cost en el dashboard.</li>
+          <li><b>Deshacer (Ctrl+Z)</b> con confirmación para lo que mueve inventario. Vino por copas: 5 por botella (0.2 c/u).</li>
+        </ul>
+      </details>
+      <details class="demo">
+        <summary>Novedades de la versión 6.1</summary>
+        <ul class="fine" style="padding-left:18px;margin:8px 0 0;display:flex;flex-direction:column;gap:6px">
+          <li><b>Ficha de insumo:</b> toca el nombre de un insumo para ver su Kardex con saldo corrido, stock por punto, lotes y recetas.</li>
+          <li><b>Conteo ágil:</b> Enter pasa al siguiente insumo, filtro «Sin contar» y botón para saltar al siguiente pendiente.</li>
+          <li><b>Merma express:</b> «Repetir último» y accesos a lo que más se reporta; los mosaicos se ordenan por uso.</li>
+          <li><b>Filtros con contadores:</b> en Kardex (bajo mínimo, lotes, categorías y orden), ventas POS (solo filas con problemas) y bitácora.</li>
+          <li><b>Novedades desde tu último ingreso:</b> al entrar ves lo que hicieron los demás y que te toca a ti.</li>
+        </ul>
+      </details>
+
+      <div class="row" style="justify-content:space-between">
+        <p class="fine">Simulación en el navegador. La autenticación real se hará en servidor en la fase 2.</p>
+      </div>
+      <div id="reset-zone">
+        <button type="button" class="linkbtn" id="reset-ask">Restablecer demo</button>
+        <div class="box-warn" id="reset-confirm" hidden>
+          Se borrarán compras, mermas, conteos, ventas cargadas y fotos subidas en este navegador.
+          <div class="row" style="margin-top:8px">
+            <button type="button" class="btn sm danger" id="reset-yes">Sí, restablecer</button>
+            <button type="button" class="btn sm ghost" id="reset-no">Cancelar</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ============ APLICACIÓN ============ -->
+<div id="v-app" hidden>
+  <header class="topbar">
+    <div class="tb-in">
+      <a class="tb-logo" href="#inicio" aria-label="Ir a inicio"><img data-img="logo" alt="Stragos"></a>
+      <nav class="tb-nav" id="tb-nav" aria-label="Módulos"></nav>
+      <div class="tb-user">
+        <span class="who-txt"><b id="tb-name"></b><span class="role" id="tb-role"></span></span>
+        <select id="tb-switch" aria-label="Cambiar de cuenta (demo guiada)" hidden></select>
+        <button class="tb-out" type="button" id="tb-undo" data-act="undo" hidden><svg class="ic" viewBox="0 0 24 24"><path d="M9 7L4 12l5 5M4 12h11a5 5 0 0 1 0 10h-2"/></svg><span>Deshacer</span></button>
+        <button class="tb-out" type="button" id="tb-out"><svg class="ic" viewBox="0 0 24 24"><path d="M15 4h4v16h-4M10 8l-4 4 4 4M6 12h10"/></svg><span>Salir</span></button>
+      </div>
+    </div>
+  </header>
+  <main class="main" id="main" tabindex="-1"></main>
+  <p class="sim">Simulación en el navegador con datos ficticios · fecha de demo 20/11/2026. La seguridad real (usuarios, contraseñas y permisos) se hará en servidor en la fase 2.</p>
+  <nav class="bnav" id="bnav" aria-label="Módulos"></nav>
+</div>
+
+<div class="toasts" id="toasts" aria-live="polite"></div>
+<div class="sheet-bg" id="sheet-bg" hidden><div class="sheet" id="sheet" role="dialog" aria-modal="true"></div></div>
+<div class="idle" id="idle" role="alert" hidden>
+  <span>Tu sesión se cerrará por inactividad en <b id="idle-s">30</b> s.</span>
+  <button class="btn sm" type="button" id="idle-keep">Seguir conectado</button>
+</div>
