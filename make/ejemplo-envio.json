@@ -1,0 +1,61 @@
+{
+  "origen": "stragos-inventarios",
+  "version": 7,
+  "id_envio": "ENV-20261120-221530-barra",
+  "tipo": "inventario_diario",
+  "cabecera": {
+    "id_envio": "ENV-20261120-221530-barra",
+    "tipo": "Inventario diario",
+    "tienda": "Stragos Ucello · San Borja",
+    "punto": "Barra principal",
+    "responsable": "Equipo de barra",
+    "enviado_por": "Equipo de barra",
+    "rol": "Operario de barra/cocina",
+    "fecha": "2026-11-20",
+    "hora": "22:15:30",
+    "total_items": 2,
+    "enviado_en": "2026-11-21T03:15:30.000Z"
+  },
+  "detalle": [
+    {
+      "id_envio": "ENV-20261120-221530-barra",
+      "linea": 1,
+      "tipo": "inventario_diario",
+      "punto": "Barra principal",
+      "sku": "LIC-002",
+      "insumo": "Pisco quebranta 700 ml",
+      "categoria": "Licores",
+      "unidad": "bot",
+      "apertura": 8,
+      "recibido": 0,
+      "enviado": 0,
+      "consumo_recetas": "",
+      "mermas": 0,
+      "saldo_teorico": "",
+      "cantidad_contada": 6.25,
+      "diferencia": "",
+      "costo_unitario": "",
+      "valor": ""
+    },
+    {
+      "id_envio": "ENV-20261120-221530-barra",
+      "linea": 2,
+      "tipo": "inventario_diario",
+      "punto": "Barra principal",
+      "sku": "VIN-001",
+      "insumo": "Vino tinto 750 ml",
+      "categoria": "Licores",
+      "unidad": "bot",
+      "apertura": 6,
+      "recibido": 0,
+      "enviado": 0,
+      "consumo_recetas": "",
+      "mermas": 0,
+      "saldo_teorico": "",
+      "cantidad_contada": 4.4,
+      "diferencia": "",
+      "costo_unitario": "",
+      "valor": ""
+    }
+  ]
+}

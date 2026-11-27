@@ -22,6 +22,7 @@ GitHub Pages (docs/index.html)  ──fetch──▶  Google Apps Script (/exec)
 | `src/` | Código fuente: `app.css`, `shell.html` y `js/` dividido por módulo (núcleo, lógica, pantallas, compras, diario, control…). |
 | `img/` | Fotos de la carta (4:3, con logotipo) y logotipo blanco. |
 | `datos-prueba/` | Excel y CSV de ventas con cortesías y promociones, y el script que los genera. |
+| `make/` | Botón «Guardar BD»: guía para armar el escenario de Make, plantilla de Google Sheets (Cabecera y Detalle) y un JSON de ejemplo. |
 | `config.json` | URL `/exec` del Apps Script que usa la versión de GitHub Pages. |
 | `build.py` | Junta todo en un solo HTML para el artefacto, Apps Script y GitHub Pages. |
 

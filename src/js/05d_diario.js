@@ -15,7 +15,7 @@ function dailyOpHtml(V){
   if (!d.sent){
     UI.dcounts = UI.dcounts || {}; const C = UI.dcounts[pt] = UI.dcounts[pt] || {};
     const done = its.filter(i => C[i.sku] !== undefined && C[i.sku] !== "").length;
-    h += '<p class="muted small" style="margin:0 0 10px">Cierre del ' + fdate(DEMO_DATE) + ' · ' + done + ' de ' + its.length + ' contados · escribe la cantidad y presiona Enter para pasar al siguiente.</p>';
+    h += '<p class="muted small" style="margin:0 0 10px">Cierre del ' + fdate(DEMO_DATE) + ' · <span id="dc-done">' + done + ' de ' + its.length + '</span> contados · escribe la cantidad y presiona Enter para pasar al siguiente.</p>';
     h += '<div class="count-list">' + its.map(i => {
       const v = C[i.sku], has = v !== undefined && v !== "";
       return '<div class="count-item' + (has ? " done" : "") + '"><span class="cat">' + ic(i.cat) + '</span><div class="nm"><b>' + esc(i.name) + '</b><span>Cuenta en ' + esc(i.unit) + (i.factor !== 1 ? ' · ' + esc(equiv(i)) : "") + '</span></div>' +
@@ -23,9 +23,9 @@ function dailyOpHtml(V){
         (i.portions > 1 ? '<div class="fracs">' + fracButtons(i, "dc-frac", 'data-sku="' + i.sku + '"', has ? +v : null) + '</div>' : "") + '</div></div>';
     }).join("") + '</div>';
     h += UI.dAsk ? '<div class="box-warn" style="margin-top:16px;max-width:640px"><b>¿Enviar el cierre de ' + POINTS[pt].toLowerCase() + '?</b><p style="margin:6px 0">Al enviarlo queda registrado con tu usuario y la hora, y ya no se puede corregir.</p><div class="row"><button class="btn" data-act="d-send">Sí, enviar cierre</button><button class="btn ghost" data-act="d-ask" data-v="0">Volver</button></div></div>'
-      : '<div class="row" style="margin-top:16px"><button class="btn" data-act="d-ask" data-v="1"' + (done < its.length ? " disabled" : "") + '>Revisar y enviar cierre</button>' + (done < its.length ? '<span class="muted small">Faltan ' + (its.length - done) + ' insumos.</span>' : "") + '</div>';
+      : '<div class="row" style="margin-top:16px"><button class="btn" id="dc-ask" data-act="d-ask" data-v="1"' + (done < its.length ? " disabled" : "") + '>Revisar y enviar cierre</button><span class="muted small" id="dc-left">' + (done < its.length ? 'Faltan ' + (its.length - done) + ' insumos.' : "") + '</span></div>';
   } else {
-    h += '<div class="box-ok" style="margin-bottom:14px">' + ic("lock") + ' Cierre de ' + POINTS[pt].toLowerCase() + ' enviado el ' + esc(d.at) + '. Gerencia lo comparará con lo vendido según recetas.</div>';
+    h += '<div class="box-ok" style="margin-bottom:14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><span style="flex:1;min-width:220px">' + ic("lock") + ' Cierre de ' + POINTS[pt].toLowerCase() + ' enviado el ' + esc(d.at) + '. Gerencia lo comparará con lo vendido según recetas.</span>' + bdButton("inventario_diario", pt) + '</div>';
     h += '<h3 class="sec">Mi Kardex del día · ' + POINTS[pt] + '</h3><div class="tw"><table><thead><tr><th>Insumo</th><th class="n">Apertura</th><th class="n">+ Recibido</th><th class="n">− Enviado</th><th class="n">− Mermas</th><th class="n">= Cierre contado</th><th class="n">Consumo real</th></tr></thead><tbody>' +
       d.rows.map(r => { const it = its.find(i => i.sku === r.sku), use = r.open == null ? null : r.open + r.inn - r.out - r.merma - r.close;
         return '<tr><td>' + esc(it.name) + '</td><td class="n">' + (r.open == null ? "—" : num(r.open)) + '</td><td class="n">' + num(r.inn) + '</td><td class="n">' + num(r.out) + '</td><td class="n">' + num(r.merma) + '</td><td class="n"><b>' + num(r.close) + '</b></td><td class="n">' + (use == null ? "—" : num(use) + ' ' + it.unit) + '</td></tr>'; }).join("") +
@@ -41,6 +41,12 @@ INPUT["dcount"] = (el) => {
   el.removeAttribute("aria-invalid");
   UI.dcounts[pt][el.dataset.sku] = raw;
   el.closest(".count-item").classList.toggle("done", raw !== "");
+  // actualiza el avance y habilita el envío sin volver a dibujar (no se pierde el foco)
+  const total = document.querySelectorAll('[data-in="dcount"]').length;
+  const done = Array.from(document.querySelectorAll('[data-in="dcount"]')).filter(i => UI.dcounts[pt][i.dataset.sku] !== undefined && UI.dcounts[pt][i.dataset.sku] !== "").length;
+  if ($("dc-done")) $("dc-done").textContent = done + " de " + total;
+  if ($("dc-ask")) $("dc-ask").disabled = done < total;
+  if ($("dc-left")) $("dc-left").textContent = done < total ? "Faltan " + (total - done) + " insumos." : "";
 };
 ACT["dc-frac"] = (el) => { const C = UI.dcounts[UI.dpt]; C[el.dataset.sku] = String(r4(Math.floor(+C[el.dataset.sku] || 0) + +el.dataset.f)); render(); };
 ACT["d-ask"] = (el) => { UI.dAsk = el.dataset.v === "1"; render(); };
@@ -58,7 +64,8 @@ function dailyAdminHtml(){
   const close = dailyOf(pt, date), audit = auditFor(pt, date), rows = dailyTheo(pt, date);
   let h = phead("Inventario diario", "Cierre de turno de barra y cocina frente a lo que debería quedar según las ventas del día. Lo cuenta el operario a ciego.");
   h += '<div class="row" style="margin-bottom:12px"><div class="tabs" style="margin:0">' + ["bar","coc"].map(p => '<button type="button" class="' + (p === pt ? "on" : "") + '" data-act="dpt2" data-pt="' + p + '">' + POINTS[p] + '</button>').join("") + '</div>' +
-    '<label class="row small" style="gap:8px">Día <select class="input" style="width:auto;min-height:40px" data-ch="ddate">' + dates.map(d => '<option value="' + d + '"' + (d === date ? " selected" : "") + '>' + fdate(d) + (dailyOf(pt, d) ? "" : " · sin cierre") + '</option>').join("") + '</select></label></div>';
+    '<label class="row small" style="gap:8px">Día <select class="input" style="width:auto;min-height:40px" data-ch="ddate">' + dates.map(d => '<option value="' + d + '"' + (d === date ? " selected" : "") + '>' + fdate(d) + (dailyOf(pt, d) ? "" : " · sin cierre") + '</option>').join("") + '</select></label>' +
+    (close ? '<span class="spacer"></span>' + bdButton("inventario_diario", pt) : "") + '</div>';
   const tol = (r) => Math.max(0.05, Math.abs(r.theo || 0) * DB.settings.tolOk / 100);
   let falt = 0, sobr = 0, nDiff = 0, nAud = 0, nAudOk = 0;
   const body = rows.map(r => {

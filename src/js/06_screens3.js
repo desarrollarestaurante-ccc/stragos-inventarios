@@ -300,7 +300,7 @@ ACT["photo-save"] = () => {
 /* ---------------- REPORTES Y BITÁCORA ---------------- */
 SCREENS.reportes = () => {
   let h = phead("Reportes y bitácora", "Reportes para copiar y pegar en Excel, la matriz de permisos y el registro de todo lo que pasó.");
-  h += tabs("reportesTab", [{id:"lotes", label:"Lotes por vencer"},{id:"kardex", label:"Kardex valorizado"},{id:"permisos", label:"Matriz de permisos"},{id:"bitacora", label:"Bitácora"}], "lotes");
+  h += tabs("reportesTab", [{id:"lotes", label:"Lotes por vencer"},{id:"kardex", label:"Kardex valorizado"},{id:"permisos", label:"Matriz de permisos"},{id:"bitacora", label:"Bitácora"},{id:"bd", label:"Guardar BD (Make)"}], "lotes");
   const t = UI.reportesTab;
   if (t === "lotes"){
     const hz = UI.hz || 7;
@@ -324,6 +324,8 @@ SCREENS.reportes = () => {
       Object.keys(PERMS).map(p => '<tr><td>' + esc(PERM_LABELS[p]) + '</td>' + rk.map(r => '<td>' + (can(r, p) ? chip("ok", "Sí", "check") : '<span class="muted">No</span>') + '</td>').join("") + '</tr>').join("") + '</tbody></table></div>';
     h += '<h3 class="sec">Cuentas</h3><div class="tw"><table><thead><tr><th>Persona</th><th>Usuario</th><th>Rol</th></tr></thead><tbody>' + Object.keys(USERS).map(u => '<tr><td>' + esc(USERS[u].name) + '</td><td class="sku">' + u + '</td><td>' + esc(ROLES[USERS[u].role].label) + '</td></tr>').join("") + '</tbody></table></div>';
     h += '<p class="note" style="margin-top:14px">Esta tabla se genera desde la misma matriz que usan los menús, las rutas y cada botón.</p>';
+  } else if (t === "bd"){
+    h += bdConfigHtml();
   } else {
     h += fchips("btc", LOG_CATS.map(c => ({id:c.id, label:c.label, n:DB.log.filter(l => c.re.test(l.action)).length, cls:c.id === "accesos" ? "bad" : ""})), "todo");
     h += '<div class="row" style="margin-bottom:12px"><div class="field" style="flex:1;max-width:420px"><input class="input" id="bt-q" data-in="bt-q" placeholder="Filtrar por usuario o acción…" value="' + esc(UI.btq || "") + '" aria-label="Filtrar bitácora"></div><span class="muted small">Solo lectura · ' + DB.log.length + ' registros</span></div>';

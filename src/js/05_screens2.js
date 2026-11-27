@@ -8,7 +8,7 @@ SCREENS.conteo = (V) => SESSION.role === "aud" ? countAuditor(V) : countCompare(
 function countAuditor(V){
   const c = V.count;
   let h = phead("Conteo físico", "Cuenta lo que ves, punto por punto. No verás el saldo del sistema: así el conteo es a ciego.");
-  if (c.status === "sent") return h + '<div class="box-ok" style="display:flex;gap:10px;align-items:center">' + ic("lock") + '<div><b>Conteo enviado el ' + esc(c.at) + ' por ' + esc(USERS[c.by] ? USERS[c.by].name : c.by) + '.</b><br>Quedó bloqueado. La administración lo comparará con el teórico.</div></div>';
+  if (c.status === "sent") return h + '<div class="box-ok" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">' + ic("lock") + '<div style="flex:1;min-width:220px"><b>Conteo enviado el ' + esc(c.at) + ' por ' + esc(USERS[c.by] ? USERS[c.by].name : c.by) + '.</b><br>Quedó bloqueado. La administración lo comparará con el teórico.</div>' + bdButton("conteo_fisico") + '</div>';
   if (c.status === "closed") return h + '<div class="empty"><b>No hay un conteo abierto</b>El último inventario ya se cerró. Gerencia abrirá el siguiente conteo.</div>';
   const pr = countProgress();
   const pt = UI.conteoPt && pr.byPt[UI.conteoPt] ? UI.conteoPt : "bar";
@@ -76,7 +76,7 @@ ACT["count-frac"] = (el) => {
 
 function countCompare(V){
   const c = V.count, s = DB.settings;
-  let h = phead("Conteo físico", "Compara lo que contó el auditor con el saldo teórico del Kardex y cierra el inventario.");
+  let h = phead("Conteo físico", "Compara lo que contó el auditor con el saldo teórico del Kardex y cierra el inventario.", c.status === "sent" || (c.status === "closed" && DB.lastCount) || (c.status === "none" && DB.lastCount) ? bdButton("conteo_fisico") : "");
   if (c.status === "none" || c.status === "draft"){
     h += '<div class="empty"><b>' + (c.status === "draft" ? "El auditor está contando" : "Todavía no hay un conteo en curso") + '</b>Verás el conteo cuando el auditor lo envíe. Antes de eso no se muestra ningún número, para que sea a ciego.</div>';
     return h + lastCountHtml();
@@ -134,7 +134,7 @@ ACT["count-reopen"] = () => { if (reopenCount()){ toast("Nuevo conteo abierto. E
 
 /* ---------------- KARDEX Y LOTES ---------------- */
 SCREENS.kardex = (V) => {
-  let h = phead("Kardex y lotes", "Saldo inicial + entradas − salidas = saldo teórico. Costos a promedio ponderado, sin IGV.");
+  let h = phead("Kardex y lotes", "Saldo inicial + entradas − salidas = saldo teórico. Costos a promedio ponderado, sin IGV.", bdButton("kardex"));
   const fl = DB.items.map(i => ({it:i, f:itemFlags(i.sku)}));
   const cats = {}; DB.items.forEach(i => { cats[i.cat] = (cats[i.cat] || 0) + 1; });
   h += fchips("kxf", [{id:"all", label:"Todos", n:DB.items.length},

@@ -51,7 +51,8 @@ html = f"""<meta charset="utf-8">
 </style>
 {read("shell.html")}
 <script>window.STRAGOS_IMG = {json.dumps(img)};
-window.STRAGOS_POS_EXAMPLE = {json.dumps(pos_example)};</script>
+window.STRAGOS_POS_EXAMPLE = {json.dumps(pos_example)};
+window.STRAGOS_MAKE = {json.dumps(CONFIG.get("make_webhook_url", ""))};</script>
 <script>
 {js}
 </script>
